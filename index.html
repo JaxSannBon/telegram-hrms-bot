@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 
@@ -17,24 +18,24 @@
 
 html,
 body{
-    width:100%;
-    min-height:100vh;
     margin:0;
     padding:0;
+    width:100%;
+    min-height:100vh;
     font-family:Arial,sans-serif;
     background:#ffffff;
 }
 
 .container{
     width:100%;
-    max-width:700px;
+    max-width:500px;
     margin:auto;
     padding:20px;
 }
 
 h2{
     text-align:center;
-    margin-bottom:25px;
+    margin-bottom:20px;
 }
 
 label{
@@ -69,13 +70,9 @@ button{
     border:none;
     border-radius:8px;
     background:#2481cc;
-    color:white;
+    color:#fff;
     font-size:16px;
     cursor:pointer;
-}
-
-button:hover{
-    opacity:0.9;
 }
 
 .notice{
@@ -96,6 +93,7 @@ button:hover{
 }
 
 </style>
+
 </head>
 
 <body>
@@ -105,7 +103,7 @@ button:hover{
 <h2>员工入职登记</h2>
 
 <div class="alert">
-⚠ 工作期间请勿修改工作小名及 Telegram Username，否则可能影响考勤统计、工资发放及员工福利领取。
+⚠ 工作期间请勿修改工作小名及 Telegram Username，否则可能影响考勤统计、工资发放及福利领取。
 </div>
 
 <label>
@@ -165,10 +163,6 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-if (tg.requestFullscreen) {
-    tg.requestFullscreen();
-}
-
 const user = tg.initDataUnsafe.user || {};
 
 document.getElementById("username").value =
@@ -194,13 +188,13 @@ async function submitForm(){
 
     const data = {
 
-        telegram_id:user.id || "",
+        telegram_id: user.id || "",
 
-        username:user.username || "",
+        username: user.username || "",
 
-        nickname:nickname,
+        nickname: nickname,
 
-        join_date:joinDate,
+        join_date: joinDate,
 
         remark:
         document.getElementById("remark").value.trim()
@@ -219,16 +213,16 @@ async function submitForm(){
             body:JSON.stringify(data)
         });
 
-        const result = await response.json();
+        if(!response.ok){
+            throw new Error("Request failed");
+        }
 
         alert("提交成功");
-
         tg.close();
 
     }catch(error){
 
         console.error(error);
-
         alert("提交失败，请联系HR");
 
     }
@@ -239,3 +233,4 @@ async function submitForm(){
 
 </body>
 </html>
+```
