@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+padding:20px;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin-bottom:12px;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:14px;
+font-size:16px;
+}
+
+.notice{
+background:#f5f5f5;
+padding:12px;
+border-radius:8px;
+margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>员工入职登记</h2>
+
+<label>
+工作小名
+<span style="color:red;font-size:12px;">
+（工作中不能修改）
+</span>
+</label>
+
+<input
+id="nickname"
+placeholder="请输入工作小名">
+
+<label>
+Telegram Username
+<span style="color:red;font-size:12px;">
+（工作中不能修改）
+</span>
+</label>
+
+<input
+id="username"
+placeholder="@Username">
+<input
+id="joinDate"
+type="date">
+
+<textarea
+id="remark"
+placeholder="备注"></textarea>
+
+<button onclick="submitForm()">
+提交
+</button>
+
+<div class="notice">
+
+<b>入职之前麻烦准备好以下内容：</b>
+
+<ul>
+<li>工作电脑</li>
+<li>稳定网络</li>
+<li>VPN软件</li>
+<li>Zoom软件</li>
+<li>小飞机（Telegram）</li>
+</ul>
+
+</div>
+
+<script>
+
+const tg = Telegram.WebApp;
+
+tg.expand();
+
+const user =
+tg.initDataUnsafe.user || {};
+
+document.getElementById("username").value =
+"@" + (user.username || "");
+
+function submitForm(){
+
+const data={
+
+telegram_id:user.id,
+
+username:user.username,
+
+nickname:
+document.getElementById("nickname").value,
+
+join_date:
+document.getElementById("joinDate").value,
+
+remark:
+document.getElementById("remark").value
+
+};
+
+fetch(
+"https://script.google.com/macros/s/AKfycbzFzO0kTN1Q2wxDJ3eL7YX9ISOys1t885cl_sgbY1LBVUk5zfKE6AYEQNr9QkiyMzCa/exec",
+{
+method:"POST",
+body:JSON.stringify(data)
+}
+)
+.then(r=>r.json())
+.then(()=>{
+
+alert("提交成功");
+
+tg.close();
+
+});
+
+}
+
+</script>
+
+</body>
+
+</html>
